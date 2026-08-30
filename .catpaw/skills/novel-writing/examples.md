@@ -9,10 +9,10 @@
 ### 步骤 1：读取设定与状态上下文
 
 创作前读取：
-- `settings/characters/lin-yuan.md`（角色身份证）
-- `settings/style-benchmark.md`（文风基准库）
-- `state/character-state.md`（角色实时状态：林远右手虎口微伤）
-- `state/foreshadowing.md`（伏笔状态）
+- `设定/角色/lin-yuan.md`（角色身份证）
+- `设定/文风基准.md`（文风基准库）
+- `状态/角色状态追踪.md`（角色实时状态：林远右手虎口微伤）
+- `状态/伏笔追踪表.md`（伏笔状态）
 
 ---
 
@@ -74,7 +74,7 @@
 
 #### 第二步：感官正文扩写（Sensory Expansion，肉身）
 
-对照 `style-benchmark.md` 的句式节奏与五感要求进行扩写：
+对照 `文风基准.md` 的句式节奏与五感要求进行扩写：
 
 > 客栈大堂只点了两盏油灯。
 > 
@@ -152,5 +152,5 @@
 ### 步骤 6：状态归档更新
 
 将最新状态同步写入：
-- `state/character-state.md`（林远位置、虎口伤势、即时目标）
-- `state/foreshadowing.md`（追加 F-005 记录）
+- `状态/角色状态追踪.md`（林远位置、虎口伤势、即时目标）
+- `状态/伏笔追踪表.md`（追加 F-005 记录）
