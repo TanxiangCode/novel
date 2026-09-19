@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>长篇小说项目评估报告 · 科技修仙两界流 · 2026-09-15</title>
+<style>
+  :root{
+    --bg:#faf7f1;
+    --ink:#211c15;
+    --muted:#6f6558;
+    --faint:#a39685;
+    --line:rgba(33,28,21,.16);
+    --line-strong:rgba(33,28,21,.34);
+    --accent:#9c3f2a;
+    --accent-soft:rgba(156,63,42,.08);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Songti SC","STSong","Noto Serif SC","Source Han Serif SC",serif;
+    font-size:16px;
+    line-height:1.72;
+  }
+  .page{max-width:760px;margin:0 auto;padding:72px 28px 96px;}
+  /* ---------- cover ---------- */
+  .kicker{
+    font-size:12px;letter-spacing:.34em;color:var(--accent);
+    font-weight:600;margin-bottom:26px;
+  }
+  h1{
+    font-size:42px;line-height:1.22;font-weight:600;
+    letter-spacing:-0.01em;margin-bottom:14px;
+  }
+  .subtitle{font-size:16.5px;color:var(--muted);margin-bottom:40px;line-height:1.7;}
+  .meta{
+    display:flex;flex-wrap:wrap;gap:6px 28px;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:14px 2px;margin-bottom:40px;
+  }
+  .meta div{font-size:12.5px;color:var(--muted);letter-spacing:.05em;}
+  .meta b{color:var(--ink);font-weight:600;}
+  .metrics{
+    display:grid;grid-template-columns:repeat(4,1fr);
+    border-top:1px solid var(--line-strong);border-bottom:1px solid var(--line-strong);
+  }
+  .metrics > div{padding:18px 14px 16px;border-left:1px solid var(--line);}
+  .metrics > div:first-child{border-left:none;padding-left:2px;}
+  .metrics .num{font-size:26px;font-weight:600;letter-spacing:-.01em;line-height:1.15;}
+  .metrics .num i{font-style:normal;font-size:13px;color:var(--muted);margin-left:2px;}
+  .metrics .lab{font-size:12px;color:var(--muted);letter-spacing:.12em;margin-top:6px;}
+  /* ---------- toc ---------- */
+  nav{margin:52px 0 8px;}
+  nav .toc-title{font-size:12px;letter-spacing:.3em;color:var(--muted);margin-bottom:16px;}
+  nav ol{list-style:none;}
+  nav li{border-bottom:1px solid var(--line);}
+  nav li:last-child{border-bottom:none;}
+  nav a{
+    display:flex;justify-content:space-between;align-items:baseline;
+    padding:11px 2px;text-decoration:none;color:var(--ink);font-size:15px;
+  }
+  nav a:hover{color:var(--accent);}
+  nav .no{color:var(--accent);font-size:12.5px;letter-spacing:.1em;margin-right:14px;}
+  nav .toc-desc{color:var(--faint);font-size:12.5px;}
+  /* ---------- sections ---------- */
+  section{margin-top:68px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:8px;}
+  .sec-no{font-size:13px;color:var(--accent);letter-spacing:.14em;font-weight:600;white-space:nowrap;}
+  h2{font-size:25px;font-weight:600;letter-spacing:.01em;line-height:1.3;}
+  .sec-rule{border:none;border-top:1px solid var(--line-strong);margin:14px 0 26px;}
+  h3{font-size:17.5px;font-weight:600;margin:34px 0 12px;}
+  h3 .tag{
+    display:inline-block;font-size:11px;letter-spacing:.18em;color:var(--accent);
+    border:1px solid var(--accent);padding:2px 8px 1px;margin-right:10px;
+    vertical-align:2px;font-weight:600;
+  }
+  p{margin:0 0 16px;}
+  .lede{font-size:17.5px;line-height:1.85;color:var(--ink);}
+  .muted{color:var(--muted);}
+  .small{font-size:13.5px;color:var(--muted);}
+  strong{font-weight:600;}
+  ul.plain{list-style:none;margin:0 0 16px;}
+  ul.plain li{padding:7px 0 7px 0;border-bottom:1px dashed var(--line);}
+  ul.plain li:last-child{border-bottom:none;}
+  ul.plain li b{font-weight:600;}
+  /* verdict block */
+  .verdict{border:1px solid var(--line-strong);padding:26px 28px 10px;margin:26px 0 8px;background:rgba(255,255,255,.35);}
+  .verdict .v-title{font-size:12px;letter-spacing:.3em;color:var(--accent);font-weight:600;margin-bottom:16px;}
+  .v-row{display:flex;gap:16px;padding:12px 0;border-top:1px solid var(--line);}
+  .v-row:first-of-type{border-top:none;}
+  .v-q{flex:0 0 152px;font-weight:600;font-size:14.5px;line-height:1.55;}
+  .v-a{flex:1;font-size:14.5px;line-height:1.66;}
+  .v-a em{font-style:normal;color:var(--accent);font-weight:600;}
+  /* tables */
+  table{width:100%;border-collapse:collapse;margin:18px 0 22px;font-size:13.8px;line-height:1.6;}
+  th{
+    text-align:left;font-weight:600;font-size:12px;letter-spacing:.14em;color:var(--muted);
+    border-top:1px solid var(--line-strong);border-bottom:1px solid var(--line-strong);
+    padding:9px 10px 8px;white-space:nowrap;
+  }
+  td{border-bottom:1px solid var(--line);padding:10px 10px;vertical-align:top;}
+  tr:last-child td{border-bottom:1px solid var(--line-strong);}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;}
+  td .yes{color:var(--accent);font-weight:600;}
+  /* note / callout */
+  .note{
+    border-left:2px solid var(--accent);background:var(--accent-soft);
+    padding:14px 18px;margin:20px 0 22px;font-size:14px;line-height:1.7;
+  }
+  .note b{font-weight:600;}
+  /* two col compare */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line-strong);margin:20px 0 24px;}
+  .duo > div{padding:20px 22px;}
+  .duo > div:first-child{border-right:1px solid var(--line-strong);}
+  .duo h4{font-size:14px;letter-spacing:.1em;font-weight:600;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+  .duo ul{list-style:none;}
+  .duo li{font-size:13.8px;padding:6px 0;border-bottom:1px dashed var(--line);line-height:1.6;}
+  .duo li:last-child{border-bottom:none;}
+  .duo .up{color:var(--accent);font-weight:600;}
+  .duo .down{color:var(--muted);}
+  /* timeline-ish flow */
+  .flow{margin:20px 0 24px;border-top:1px solid var(--line-strong);}
+  .flow .step{display:flex;gap:16px;padding:13px 2px;border-bottom:1px solid var(--line);}
+  .flow .s-no{flex:0 0 34px;color:var(--accent);font-weight:600;font-size:14px;}
+  .flow .s-body{flex:1;font-size:14.2px;line-height:1.66;}
+  .flow .s-body b{font-weight:600;}
+  .flow .s-body .s-meta{display:block;font-size:12px;color:var(--muted);letter-spacing:.06em;margin-top:3px;}
+  /* footer */
+  footer{
+    margin-top:84px;border-top:1px solid var(--line-strong);padding-top:18px;
+    display:flex;justify-content:space-between;font-size:12px;color:var(--faint);letter-spacing:.08em;
+  }
+  @media (max-width:640px){
+    .page{padding:48px 18px 72px;}
+    h1{font-size:31px;}
+    .metrics{grid-template-columns:repeat(2,1fr);}
+    .metrics > div{border-left:none;border-top:1px solid var(--line);}
+    .metrics > div:nth-child(-n+2){border-top:none;}
+    .metrics > div:nth-child(even){border-left:1px solid var(--line);}
+    .duo{grid-template-columns:1fr;}
+    .duo > div:first-child{border-right:none;border-bottom:1px solid var(--line-strong);}
+    .v-row{flex-direction:column;gap:6px;}
+    .v-q{flex:none;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ============ COVER ============ -->
+  <header>
+    <div class="kicker">小说项目评估 · 审稿意见书</div>
+    <h1>科技修仙 · 两界流长篇<br>项目评估报告</h1>
+    <p class="subtitle">设定完备度 · 大纲健康度 · 体量测算 · 起点 / 番茄发布评估。审读范围：设定库全量 44 份、六卷大纲、第 1 卷章纲（20 节拍）、正文第 001–010 章、四轮诊断档案与状态追踪表。</p>
+    <div class="meta">
+      <div>评审日期 <b>2026-09-15</b></div>
+      <div>项目路径 <b>/Users/xiang/Documents/novel</b></div>
+      <div>正文进度 <b>第 1–10 章（第 1–2 节拍）</b></div>
+      <div>书名状态 <b>四候选待裁决</b></div>
+    </div>
+    <div class="metrics">
+      <div><div class="num">32<i>万字</i></div><div class="lab">设定与大纲库</div></div>
+      <div><div class="num">1.99<i>万字</i></div><div class="lab">正文成稿</div></div>
+      <div><div class="num">6<i>卷</i></div><div class="lab">全书骨架</div></div>
+      <div><div class="num">17<i>条</i></div><div class="lab">编号伏笔</div></div>
+    </div>
+  </header>
+
+  <!-- ============ TOC ============ -->
+  <nav>
+    <div class="toc-title">目 录</div>
+    <ol>
+      <li><a href="#s1"><span><span class="no">01</span>总评：四问四答</span><span class="toc-desc">结论先行</span></a></li>
+      <li><a href="#s2"><span><span class="no">02</span>资产盘点：已有什么、成色如何</span><span class="toc-desc">分级清单</span></a></li>
+      <li><a href="#s3"><span><span class="no">03</span>缺口清单：还缺什么</span><span class="toc-desc">按优先级分层</span></a></li>
+      <li><a href="#s4"><span><span class="no">04</span>大纲与世界观体检</span><span class="toc-desc">含本次新发现</span></a></li>
+      <li><a href="#s5"><span><span class="no">05</span>体量测算：200–300 万字可行性</span><span class="toc-desc">逐卷推算</span></a></li>
+      <li><a href="#s6"><span><span class="no">06</span>平台发布评估：起点与番茄</span><span class="toc-desc">赛道 · 签约 · 风险</span></a></li>
+      <li><a href="#s7"><span><span class="no">07</span>行动清单</span><span class="toc-desc">按顺序执行</span></a></li>
+    </ol>
+  </nav>
+
+  <!-- ============ S1 ============ -->
+  <section id="s1">
+    <div class="sec-head"><span class="sec-no">§ 01</span><h2>总评：四问四答</h2></div>
+    <hr class="sec-rule">
+    <p class="lede">先说总判断：这是一套<strong>工业化完成度罕见的高</strong>的小说前期资产——设定自洽、伏笔有台账、大纲细到节拍、正文文笔在线。它目前最大的风险不在故事本身，而在三件事：<strong>书名与开篇裁决未落地、单章字数系统性未达标、以及"设定已过热、正文需保温"的老毛病仍有回潮迹象</strong>。以下四个问题按你的原始提问逐一直答。</p>
+
+    <div class="verdict">
+      <div class="v-title">四 问 四 答</div>
+      <div class="v-row">
+        <div class="v-q">设定还缺什么？</div>
+        <div class="v-a">骨架不缺，缺的是<em>发布件与两处收束</em>：书名四案、简介全文、境界节奏 A/B/C 三项裁决未落；卷 6 缺凡人层数千人的终局交代；天魔线在终卷缺一句归宿。其余按需展开即可。</div>
+      </div>
+      <div class="v-row">
+        <div class="v-q">大纲 / 世界观要调吗？</div>
+        <div class="v-a"><em>结构不需要大改</em>。六卷架构、双线冲突、伏笔网均健全。需要的是五处微调（详见 §04）：第 8 章一处方位矛盾须立即修；卷 3 密度、卷 5 回收峰、卷 2 / 卷 4 升级密度在写章纲时补偿。</div>
+      </div>
+      <div class="v-row">
+        <div class="v-q">能否写 200–300 万？</div>
+        <div class="v-a"><em>200 万可达，300 万超纲</em>。现行结构天然容量约 146–240 万字；按"单章 3000–3200 字 + 部分节拍扩至 6 章"运行可稳到 200 万上下。300 万需把单章放宽到 4000 字或增加第七卷体量——不建议以 300 万为目标硬凑。</div>
+      </div>
+      <div class="v-row">
+        <div class="v-q">起点 / 番茄能发、能受欢迎吗？</div>
+        <div class="v-a">能发布，<em>起点显著优于番茄</em>。前三章质量在签约线以上，题材处于活跃赛道且差异化充足；"受欢迎"无法承诺，但建议以起点为主攻，用前 30 章真实数据做去留决策——这也正是你自己的诊断纪律。</div>
+      </div>
+    </div>
+
+    <p class="small" style="margin-top:14px;">一句话版本：<strong>这是一个"该写了"的项目，不是"该再改一轮"的项目。</strong>你自己的 07 号诊断已经点破"设定过热、正文失温"，2026-09-05 起正文已破冰 10 章——接下来的全部优先级都应服务于"把第 1 卷写完并发布"。</p>
+  </section>
+
+  <!-- ============ S2 ============ -->
+  <section id="s2">
+    <div class="sec-head"><span class="sec-no">§ 02</span><h2>资产盘点：已有什么、成色如何</h2></div>
+    <hr class="sec-rule">
+    <p>全库 75 份 Markdown、约 32 万汉字（不含诊断档案则约 23 万）。规模本身不稀奇，稀奇的是<strong>分层与台账纪律</strong>：世界观唯一权威源、锚点清单追加式登记、伏笔"埋设—推进—回收"三段管理、每卷名场面布防清单——这套东西多数签约作者都做不到。</p>
+
+    <table>
+      <thead><tr><th>资产</th><th>规模</th><th>成色</th><th>评语</th></tr></thead>
+      <tbody>
+        <tr><td>世界观主文档</td><td>约 2 万字</td><td><span class="yes">A</span></td><td>两界结构、灵气物理（泄漏四段速率）、渗透三层体系、守壁司六重巧合——自洽度高，几乎每个超自然元素都有制度解释。</td></tr>
+        <tr><td>专项设定（A–E 五类）</td><td>18 份全部建档</td><td><span class="yes">A−</span></td><td>两界物理模型、监控体系、装备名录（含读数纪律）都落到可执行颗粒度；部分文档（丹药、秘境）引用密度低，属合理储备。</td></tr>
+        <tr><td>六卷大纲</td><td>118 节拍 / 约 4.7 万字</td><td><span class="yes">A−</span></td><td>卷 1 细到场景与台词级；卷 2–6 到节拍级。爽点密度、POV 纪律、名词配额都有硬指标——这是工业化写作的骨架。</td></tr>
+        <tr><td>角色体系</td><td>T0×3 + T1×10 档案全</td><td><span class="yes">A−</span></td><td>主角档案含金手指三层、语言锚点、行为锚点、逐卷成长表；T2 42 人仅总览登记（合理，按需展开）。苏薇 / 周远征 / 鹰三份偏薄（你已登记为 P-19）。</td></tr>
+        <tr><td>伏笔追踪表</td><td>17 条编号</td><td><span class="yes">A</span></td><td>埋设 / 推进 / 回收三段管理，前 10 章的落地动作已逐条回写（F-005 / F-011 / F-017）。这是全书最健康的一张表。</td></tr>
+        <tr><td>正文前 10 章</td><td>1.99 万字</td><td><span class="yes">B+</span></td><td>短句纪律、物理白描、章末钩子执行到位；"一袋盐杀练气九层""盘色倒新"都是合格的名场面。扣分项：单章字数全部低于自设下限（见 §03）。</td></tr>
+        <tr><td>文风基准与状态表</td><td>4 份</td><td><span class="yes">A</span></td><td>两界语系分离、数据必跟体感、会议戏 1200 字红线——禁令级条款具体可查，不是空话。</td></tr>
+        <tr><td>诊断档案（4 轮）</td><td>约 9 万字</td><td><span class="yes">B</span></td><td>男频重建、群像活化×2、吸睛度诊断的修订已回写 90%+；但修订编号体系（R/A/M/N/X/P/F 五套并行）复杂度已接近管理极限，不宜再加层。</td></tr>
+      </tbody>
+    </table>
+
+    <h3>三个真正的强项（相对同赛道竞品）</h3>
+    <ul class="plain">
+      <li><b>金手指辨识度。</b>"唯一能看见灵气数字的人"+"这不是法术，是物理"——类型信号三秒可传递，且读数纪律（望气壳、袖口投影）把"开挂"与"暴露"的张力做成了制度，而非口头限制。</li>
+      <li><b>反派与机构的智商在线。</b>幽冥殿五司各有动机、陆衡"学会验证"、天魔夜干扰痕迹反成破案线索（F-016）——猫鼠双方都在进化，这是智斗流最值钱的品质。</li>
+      <li><b>衰减危机的"可测量性"改写。</b>归藏界无定量手段→主角是唯一知道灵药要涨的人→先知套利。这是男频路线重建里性价比最高的一刀，把世界观设定直接变成了爽点发生器。</li>
+    </ul>
+  </section>
+
+  <!-- ============ S3 ============ -->
+  <section id="s3">
+    <div class="sec-head"><span class="sec-no">§ 03</span><h2>缺口清单：还缺什么</h2></div>
+    <hr class="sec-rule">
+    <p>按"多快要补"分三层。第一层是发布前置件，一天内可裁决；第二层随卷 1 写作补齐；第三层是远期占位，不阻塞任何事。</p>
+
+    <h3><span class="tag">第一层</span>发布前必办（本周可清）</h3>
+    <table>
+      <thead><tr><th>#</th><th>缺口</th><th>现状</th><th>建议</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><b>书名裁决</b></td><td>四案并存（A 修仙界没有物理 / B 我在修仙界讲物理 / C 灵气在消失 / D 以理服人）</td><td>首推 A：类型信号最强、与卖点同构、自带反差幽默；B 是起点熟脸公式作备选。C 偏文艺悬疑、D 类型信号过弱——网文书名要给算法和读者双重复签。</td></tr>
+        <tr><td>2</td><td><b>简介定稿</b></td><td>首行口径已锁，后两行未写</td><td>按既定纪律执行：首行卖点两句，次两行断崖反杀+药庐破阵场景，全程零专有名词。写完冻结，不再迭代。</td></tr>
+        <tr><td>3</td><td><b>境界节奏 A/B/C 裁决</b></td><td>08 号文件遗留待拍板</td><td>涉及卷 1 中段升级密度，发布前必须定案；建议按"前 30 章内至少两次可见修为进益"的读者体感标准选。</td></tr>
+        <tr><td>4</td><td><b>前 10 章扩写</b></td><td>实测 Word 口径 2137–2447 字 / 章，全部低于自设 2500–3200 下限</td><td>你已在总纲标记"初稿未达标"。扩写方向按既有纪律：环境五感、生活道具交互、立威段；<b>严禁心理独白注水</b>。建议与第 3 节拍连写一起做，不单开修稿轮。</td></tr>
+      </tbody>
+    </table>
+
+    <h3><span class="tag">第二层</span>卷 1 写作期内补齐</h3>
+    <table>
+      <thead><tr><th>#</th><th>缺口</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>5</td><td><b>苏薇 / 周远征语言锚点</b></td><td>P-19 已登记。两人第 14 节拍（约第 50 章）整拍出场，动笔到第 13 节拍前补齐即可；对话风格差异决定群像成败。</td></tr>
+        <tr><td>6</td><td><b>第 3 节拍起的章纲续拆</b></td><td>卷 1 章纲已写到第 2 节拍落地的程度，保持"写节拍前拆下一节拍"的滚动节奏即可，无需一次拆完 20 节拍。</td></tr>
+        <tr><td>7</td><td><b>冷开场执行方案落章纲</b></td><td>毒点诊断 1.3 的"倒叙冷开场"目前只是执行层口径，未落进第 1 节拍章纲。前 10 章已成稿，等于这个决策已被实际写法部分绕过——建议发布前对第 1–3 章做一次"付费墙视角"复读，再决定是否重排。</td></tr>
+      </tbody>
+    </table>
+
+    <h3><span class="tag">第三层</span>远期占位（写对应卷前处理）</h3>
+    <table>
+      <thead><tr><th>#</th><th>缺口</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>8</td><td><b>凡人层数千人的终局交代</b></td><td><b>本次新发现。</b>设定称其为"从未公开的人道成本"，卷 5 有原罪实锤，但卷 6 管委会成立后这一群体没有系统性收束（老槐 / 沈铁柱 / 段天涯都是第一层）。建议卷 6 加一个凡人层家庭的终局镜头或"两地寻亲"条款，一笔即可，不立新档案。</td></tr>
+        <tr><td>9</td><td><b>天魔线与守壁司的终卷归宿</b></td><td><b>本次新发现。</b>天魔是幽冥殿的文明级存在理由，终卷两界回廊建成后守壁司职能转型没有交代。一句侧写（守壁司数据并入管委会监测体系）即可闭环。</td></tr>
+        <tr><td>10</td><td><b>卷 2–6 章纲</b></td><td>工序性缺口，按卷推进时拆解；卷 5 建议拆章纲前重读回收峰清单（见 §04）。</td></tr>
+        <tr><td>11</td><td><b>归藏界社会的思想震荡</b></td><td>卷 3 后归藏界高层知道蓝星存在，但普通修士 / 凡人的认知冲击（宗教解读、恐慌、两界通婚）是未挖的群像富矿。可挖可不挖，卷 4–6 章纲时裁量。</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============ S4 ============ -->
+  <section id="s4">
+    <div class="sec-head"><span class="sec-no">§ 04</span><h2>大纲与世界观体检</h2></div>
+    <hr class="sec-rule">
+    <p>结论先说：<strong>世界观不需要伤筋动骨的调整</strong>。我把设定层的因果链全部过了一遍——灵气衰减四段速率、精度代价的适用范围、守壁司六重巧合、男女主封顶元婴的战力天花板、灵能核弹的威慑逻辑——未发现结构性矛盾，多处交叉验证（如"筑基靠悟道"与科技辅助上限、F-005 与 F-001 的因果闭环）都能互相咬合。以下是分层意见。</p>
+
+    <h3>不用动的部分</h3>
+    <ul class="plain">
+      <li><b>六卷宏观架构：</b>卷 1 攒班底 → 卷 2 代沟与暴露 → 卷 3 协议与结丹 → 卷 4 冷战 → 卷 5 危机公开 → 卷 6 终局竞速。起承转合与"耗材觉醒"主题严格对位，不调。</li>
+      <li><b>境界与寿元体系：</b>男频版全表（练气 6 层开局 / 卷 1 末筑基 / 卷 3 金丹 / 卷 5 元婴 / 卷 6 半步化神）与"道应时势"顿悟例外、化神不新增红线自洽。</li>
+      <li><b>伏笔网：</b>17 条伏笔的跨卷分布均衡，卷 1 埋 7 条、卷 2 埋 6 条、卷 5 集中回收 6 条、终卷收 3 条；F-005 改"期待增益型"、F-011 回收提前一卷，都是正确的商业裁决。</li>
+      <li><b>精度代价设定：</b>从"限制主角"重构为"限制所有人、主角第一个破解"——同一设定从我不行变成只有我行，且给卷 5"三老兵结丹"留了新体系的兑现场面。</li>
+    </ul>
+
+    <h3><span class="tag">新发现</span>本次审读揪出的问题</h3>
+    <div class="note"><b>① 第 8 章正文方位矛盾（须立即修）。</b>《第 008 章-零点七息》描写段写"塌的位置，在<b>东南</b>""第四圈，雾流转到<b>东南</b>角，塌了"，而破阵台词与章纲锚点均为"<b>西南</b>角的灵气断了零点七息"。同一场戏前后两个方位，属于硬伤。锚点清单已固化"西南"为定调台词，应统一改描写段为西南。</div>
+    <div class="note"><b>② 单章字数系统性未达标（你已知情，列为执行项）。</b>10 章实测 Word 口径 2137–2447 字，距 2500 下限差 50–350 字。这不是文风问题——按 2500 字 / 章 × 650 章算，全书天然容量会掉到 165 万以下，直接动摇 200 万目标。扩写优先级应高于一切新设定工作。</div>
+    <div class="note"><b>③ 修订编号体系接近管理极限。</b>F（伏笔）之外，R / A / M / N / X / P 六套修订代号并行交叉引用（如"X3·A15·R8"连用）。单轮复盘没问题，但每加一套代号，未来写作时的检索成本就上升一截。建议：现有编号冻结，新增意见一律写入对应文档正文，不再新造代号。</div>
+
+    <h3>建议微调的五处（写章纲时执行，不动节拍结构）</h3>
+    <table>
+      <thead><tr><th>位置</th><th>问题</th><th>建议</th></tr></thead>
+      <tbody>
+        <tr><td>卷 3 全卷</td><td>全书密度最高：通缉 + 谈判 + 摊牌 + 结丹四线并行，20 节拍可能不够舒展</td><td>拆章纲时优先保"齿轮与账单"和"结丹"两场大戏的呼吸空间；熊线可压缩为半场侧写，北离收尾并进第 16 节拍一场戏。</td></tr>
+        <tr><td>卷 5 全卷</td><td>回收压力峰：6 条伏笔集中回收 + 两个境界大节点 + 双线高潮，跨 7 年故事时间</td><td>已有"每年至少一个危机锚点"纪律。拆章纲时做一张"回收对照表"逐节拍勾稽，避免 F-013 / F-012 这类"数据线"挤掉人物戏。</td></tr>
+        <tr><td>卷 2 / 卷 4</td><td>修为小步走（筑基初→中 / 金丹初→中），升级流读者体感偏慢</td><td>大纲已用天魔夜器物救场、鹰线博弈补偿，方向正确；执行时确保两卷各有 1–2 个"算死流主轴节拍"提前，不把金手指雪藏超过 5 章。</td></tr>
+        <tr><td>卷 3 前 7 节拍</td><td>林晚已知情（卷 2 末闭合）而陈默不知，全部互动要写双层感</td><td>执行难度全书最高。建议拆章纲时给每场两人戏标注"她知道 / 他以为"的双层注脚，防写漏；这恰是本卷最大看点，值得花功夫。</td></tr>
+        <tr><td>终卷尾声</td><td>凡人层归宿、守壁司转型两处收束空白</td><td>见 §03 第三层第 8 / 9 条，各补一笔侧写即可。</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============ S5 ============ -->
+  <section id="s5">
+    <div class="sec-head"><span class="sec-no">§ 05</span><h2>体量测算：200–300 万字可行性</h2></div>
+    <hr class="sec-rule">
+    <p>用你自己的两个硬指标（每节拍 4–5 章、单章 2500–3200 字）对六卷大纲逐卷推算，结论是：<strong>结构天然容量 146–240 万字，200 万是可达目标，300 万超出现有骨架的承载</strong>。</p>
+
+    <table>
+      <thead><tr><th>卷</th><th class="num">节拍</th><th class="num">章数（大纲口径）</th><th class="num">字数区间</th><th>备注</th></tr></thead>
+      <tbody>
+        <tr><td>卷 1 裂隙中的年轻人</td><td class="num">20</td><td class="num">85–100</td><td class="num">23–32 万</td><td>口径 25–30 万，达成无悬念</td></tr>
+        <tr><td>卷 2 渗透与代沟</td><td class="num">22</td><td class="num">110–140</td><td class="num">29–45 万</td><td>上限口径隐含部分节拍扩至 6 章</td></tr>
+        <tr><td>卷 3 暴露与危机</td><td class="num">20</td><td class="num">100–130</td><td class="num">26–42 万</td><td>四线并行，宁少勿拖</td></tr>
+        <tr><td>卷 4 冷战与抉择</td><td class="num">21</td><td class="num">100–130</td><td class="num">26–42 万</td><td>含卷间桥段并入段</td></tr>
+        <tr><td>卷 5 灵气衰逝</td><td class="num">20</td><td class="num">100–130</td><td class="num">26–42 万</td><td>七年跨度，P-24 时间弱化已裁决</td></tr>
+        <tr><td>卷 6 天门</td><td class="num">15–18</td><td class="num">90–120</td><td class="num">23–38 万</td><td>终卷宜收不宜涨</td></tr>
+        <tr><td><b>合计</b></td><td class="num"><b>118–121</b></td><td class="num"><b>585–750</b></td><td class="num"><b>146–240 万</b></td><td><b>200 万 = 章数取中高值 × 单章按上限执行</b></td></tr>
+      </tbody>
+    </table>
+
+    <h3>三个关键推论</h3>
+    <ul class="plain">
+      <li><b>200 万可达，但有前置条件。</b>585–750 章 × 2500–3200 字的乘积区间是 146–240 万。要稳过 200 万，需要"单章按 3000–3200 字执行 + 约三成节拍扩到 6 章"同时成立——这意味着文风基准里的单章字数纪律必须真正落地（当前 10 章全部未达标，是把目标越写越远的方向）。</li>
+      <li><b>300 万不建议作为目标。</b>需要单章 4000 字或 940 章以上，前者违背你"2500–3200 防注水"的纪律，后者要把节拍总数扩约三成——六卷的冲突密度撑不住这个稀释率，卷 4–5 会先垮。更现实的路径：按 200–240 万写，若市场反馈强烈，用卷间桥段和支线（灵根儿童战、两界贸易、归藏界思想震荡）自然生长，而不是预设注水。</li>
+      <li><b>真正的瓶颈是执行不是结构。</b>按日更两章（约 6000 字）、月休四天计算，200 万字约需 15–18 个月连续不断更；300 万字需两年以上。AI 辅助工作流（你库里的 novel-writing 技能链）已就位，这是把"能不能写完"变成"能"的最大变量。</li>
+    </ul>
+  </section>
+
+  <!-- ============ S6 ============ -->
+  <section id="s6">
+    <div class="sec-head"><span class="sec-no">§ 06</span><h2>平台发布评估：起点与番茄</h2></div>
+    <hr class="sec-rule">
+    <p>你的频道定位（起点·仙侠·现代修仙 / 两界流）选对了。赛道层面：科学修仙 / 赛博修仙是近两年起点男频的活跃赛道——2025 年起点新增万订书单中出现"赛博修仙、贷款修仙"类作品（《没钱修仙》），《道诡异仙》等仙侠破圈作的联动开发也在延续题材热度；学术侧 2025 年已有"赛博修仙后人类想象"的专门评论文章。本书"唯物解构修仙 + 谍战渗透"的组合在该赛道里差异度充足，<strong>不存在题材撞车问题，存在的是节奏适配问题</strong>。</p>
+
+    <div class="duo">
+      <div>
+        <h4>起点（推荐主攻）</h4>
+        <ul>
+          <li><span class="up">适配：</span>付费读者对设定密度、双线叙事、智斗慢热的耐受度高——本书群像与伏笔网正好是起点读者的舒适区。</li>
+          <li><span class="up">适配：</span>"现代修仙 / 两界流"是起点仙侠下的现成分类，编辑对这类题材有成熟评估框架。</li>
+          <li><span class="up">加分：</span>完整六卷大纲 + 伏笔台账 + 前 10 章成稿，投稿时是实打实的签约加分项。</li>
+          <li><span class="down">风险：</span>单章 2500–3200 字偏短（起点主流 3000–4000），建议按 3000+ 执行；新书期日更 6000 字的耐力要求。</li>
+          <li><span class="down">风险：</span>卷 1 第 10–14 节拍"暗流"压抑蓄力段，是付费留存的传统危险区——你已安排"国家机器跟进"的底牌，执行时注意把底牌亮早半拍。</li>
+        </ul>
+      </div>
+      <div>
+        <h4>番茄（不推荐首发）</h4>
+        <ul>
+          <li><span class="down">不适配：</span>免费端算法吃"开局高强度冲突 + 高频打脸 + 快升级"，本书卷 2 / 卷 4 修为小步走、卷 1 中段蓄力，按现状投放大概率留存不佳。</li>
+          <li><span class="down">不适配：</span>多 POV（林晚整拍、郑七 POV）与机构群像在免费端的完读成本更高。</li>
+          <li><span class="up">可行路径：</span>若日后多平台分发，可作起点连载稳定后的分销渠道；或针对性重排节奏（前 30 章砍半拍）再投——但那是另一个工程，不该影响首发决策。</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>合规与安全边际</h3>
+    <ul class="plain">
+      <li><b>架空纯度：</b>"华国 / 联邦 / 北国 / 西欧联盟"的影射处理是平台常规安全区；注意正文始终不出现现实国家全名、不影射真实政治事件与人物，卷 3 谈判戏是滑边风险最高的段落，写时保持架空语汇。</li>
+      <li><b>年代背景：</b>1973 年裂隙发现以纯技术事件呈现（地质勘探），正文至今未触碰具体年代政治，保持即可。</li>
+      <li><b>血检筛查 / 疾控网络设定：</b>科幻常规影射，风险低；灵能核弹试射发生在架空世界内部，无平台风险。</li>
+      <li><b>书名：</b>四案均无审核风险，纯商业选择问题。</li>
+    </ul>
+
+    <h3>"能否受欢迎"的诚实判断</h3>
+    <p>没有人能承诺受欢迎，但可以把变量拆开看：<strong>签约概率——较高</strong>。前三章完成度（冷开场执行、反杀爽点当章兑现、章末钩子）已过起点新人签约的常见质量线，题材差异化让编辑有明确的推荐语可写。<strong>上架成绩——取决于三个可控变量</strong>：前 30 章的爽点兑现密度（结构已保证）、单章字数纪律（当前未达标）、以及日更稳定性（执行风险）。<strong>破圈潜力——真实存在</strong>："修仙界全是错的，只有主角看得见数字"是天然的话题钩子，梗式传播（"盘色倒新""这不是法术是物理"）有现成弹药。</p>
+    <p>建议的决策机制照搬你自己的诊断纪律：<strong>发布后只认数据</strong>——前 30 章追读与完读达标→按大纲推进；不达标→先诊断章节级留存再动结构，不回炉设定。</p>
+  </section>
+
+  <!-- ============ S7 ============ -->
+  <section id="s7">
+    <div class="sec-head"><span class="sec-no">§ 07</span><h2>行动清单</h2></div>
+    <hr class="sec-rule">
+    <p>按顺序执行，前四项合计约一周工作量，之后进入纯写作节奏。</p>
+
+    <div class="flow">
+      <div class="step"><div class="s-no">01</div><div class="s-body"><b>修第 8 章方位矛盾</b>：描写段"东南"统一改"西南"，与锚点台词对齐。<span class="s-meta">立即 · 10 分钟</span></div></div>
+      <div class="step"><div class="s-no">02</div><div class="s-body"><b>三项裁决一次做完</b>：书名（建议 A《修仙界没有物理》，B 备选）、简介全文、境界节奏 A/B/C。裁决后写进总纲并冻结，发布前不再动。<span class="s-meta">本周 · 半天</span></div></div>
+      <div class="step"><div class="s-no">03</div><div class="s-body"><b>前 10 章扩写达标</b>：按 2500–3200 字口径补五感与道具交互，与第 3 节拍（还债）连写一起完成，不单开修稿轮；扩完每章过一遍字数关。<span class="s-meta">与第 11 章起同步 · 2–4 天</span></div></div>
+      <div class="step"><div class="s-no">04</div><div class="s-body"><b>补齐 P-19 语言锚点</b>：苏薇、周远征两份档案补对话风格与行为锚点（鹰可延后至卷 2 前）。<span class="s-meta">第 13 节拍动笔前 · 半天</span></div></div>
+      <div class="step"><div class="s-no">05</div><div class="s-body"><b>冻结设定轮次，滚动写卷 1</b>：按"写节拍前拆下一节拍章纲"的节奏推进；新意见一律写入正文对应文档，不再新造修订代号。目标：第 1 卷 85–100 章成稿。<span class="s-meta">主线 · 3–5 个月</span></div></div>
+      <div class="step"><div class="s-no">06</div><div class="s-body"><b>发布与数据决策</b>：起点首发（或投稿签约），单章 3000+ 字、日更 6000 字试运行两周；前 30 章数据达标则按大纲推进卷 2，不达标先做章节级留存诊断。<span class="s-meta">第 1 卷过 30 章后</span></div></div>
+      <div class="step"><div class="s-no">07</div><div class="s-body"><b>卷 6 前补两笔收束</b>：凡人层终局镜头 + 守壁司转型侧写，写入卷 6 章纲；届时顺手复查卷 5 回收对照表。<span class="s-meta">卷 5 拆章纲时</span></div></div>
+    </div>
+
+    <p style="margin-top:26px;">最后一句多余的实话：这套设定库的品质，配得上一个"写完它"的作者。它现在最不需要的是第七轮复盘，最需要的是第 11 章。</p>
+  </section>
+
+  <!-- 执行记录 2026-09-16 -->
+  <section style="border-top:1px solid var(--line-strong);margin-top:64px;padding-top:22px;">
+    <div style="font-size:12px;letter-spacing:.3em;color:var(--accent);font-weight:600;">执行记录 · 2026-09-16</div>
+    <p style="font-size:13.5px;color:var(--muted);margin-top:12px;">行动清单前四项已于次日执行完毕：①第8章方位矛盾修复（第9章反向陈述闭环，锚点清单登记定稿条）；②三项裁决落库——书名《修仙界没有物理》、简介四行版冻结、境界节奏B案（附第5-7节拍补强注）；③前10章扩写达标（实测2519-2687字/章，全部过2500下限）；④P-19苏薇/周远征语言锚点补齐；另：冷开场经付费墙复读裁决为「维持直叙不重排」（三条理由落章纲）。执行明细见 状态/行动清单执行台账.md。</p>
+  </section>
+  <footer>
+    <div>小说项目评估报告 · 内部审稿意见</div>
+    <div>2026-09-15（2026-09-16 追加执行记录）</div>
+  </footer>
+</div>
+</body>
+</html>
