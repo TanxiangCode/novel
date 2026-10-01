@@ -6,3 +6,6 @@ Thumbs.db
 .vscode/
 .agents/memory
 .obsidian
+
+# Syncthing 版本备份目录（本地同步产物，不入库）
+.stversions/
