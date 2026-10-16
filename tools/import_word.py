@@ -381,7 +381,8 @@ def compare(index, restored):
 
 def main():
     ap = argparse.ArgumentParser(description='Word → Markdown 反向导入')
-    ap.add_argument('-f', '--file', action='append', help='指定 docx（可多次）')
+    ap.add_argument('-f', '--file', action='append', nargs='+', metavar='DOCX',
+                    help='指定 docx（可一次多个，也可重复 -f）')
     ap.add_argument('--only', nargs='*', choices=FOLDERS, help='只处理部分分类文档')
     ap.add_argument('--stage', action='store_true', help='把还原出的 md 写到 Word回写/')
     ap.add_argument('--apply', action='store_true', help='直接写回 novel-project/')
@@ -392,7 +393,7 @@ def main():
     index = build_index()
 
     if args.file:
-        targets = [Path(f) for f in args.file]
+        targets = [Path(f) for group in args.file for f in group]
     else:
         want = args.only or FOLDERS
         targets = [SRC_DIR / ('%s-%s.docx' % (BOOK, cn)) for cn in want]
@@ -413,11 +414,14 @@ def main():
         news.update(r.new_files)
         titles.update(r.new_titles)
         scope = FOLDERS if merged_all else ([cn] if cn else [])
-        expect = {v for v in index.values() if v.split('/')[0] in scope}
+        # 只有整目录文档（消失的灵气-设定.docx）才做缺漏比对；按二级拆分的文档本就只含一部分
+        whole = cn and t.stem == '%s-%s' % (BOOK, cn)
+        expect = {v for v in index.values() if v.split('/')[0] in scope} if (merged_all or whole) else set()
         absent = sorted(expect - set(r.files))
-        print('%-28s 还原 %d 个文件%s，Word 中新增 %d，源有但 Word 缺 %d'
+        print('%-28s 还原 %d 个文件%s，Word 中新增 %d%s'
               % (t.name, len(r.files), '/%d' % len(expect) if expect else '',
-                 r.stats['新文件'], len(absent)))
+                 r.stats['新文件'],
+                 '，源有但 Word 缺 %d' % len(absent) if expect else '（拆分文档，不做缺漏比对）'))
         for a in absent[:5]:
             print('      缺: %s' % a)
 

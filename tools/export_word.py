@@ -4,12 +4,15 @@
 《消失的灵气》Markdown 稿件 → Word 导出工具
 
 用法：
-    python3 tools/export_word.py                 # 导出 4 个分类文档 + 1 个全量合集
-    python3 tools/export_word.py --only 正文 设定  # 只导指定分类
-    python3 tools/export_word.py --check          # 只跑内容完整性核查（不写文件）
+    python3 tools/export_word.py                  # 按 MERGE_MODE 导出 + 1 个全量合集
+    python3 tools/export_word.py --only 正文 设定   # 只导指定分类
+    python3 tools/export_word.py --mode 设定=group  # 设定按二级分组各出一份（角色.docx、势力.docx…）
+    python3 tools/export_word.py --check           # 只跑内容完整性核查（不写文件）
+    python3 tools/export_word.py --manifest        # 打印分组与合并粒度后退出
 
-日常维护：新增章节或设定文件后直接重跑即可，文件会被自动归入分组（见「分组规则」段）。
-只有想让某个文件排在前面、或换分组时，才需要改下面的 PRIORITY / GROUP_OF 提示表。
+合并粒度在 MERGE_MODE 里按目录配置：all=整个目录合成一份，group=按二级分组各合成一份，
+both=两种都出。分组本身由 discover() 自动扫描得到，新增文件无需改脚本。
+只有想让某个文件排在前面、或换分组时，才需要改下面的 PRIORITY / GROUP_ORDER 提示表。
 """
 import argparse
 import datetime
@@ -36,6 +39,13 @@ BLOCKY = ('ul', 'ol', 'table', 'pre', 'blockquote', 'div', 'p')
 BREAK = '\x00'
 
 # ===================== 分组规则（按需调整） =====================
+# 每个目录的合并粒度：all=整个目录合成一份；group=按二级分组各合成一份；both=两种都出
+MERGE_MODE = {
+    '正文': 'all',
+    '大纲': 'all',
+    '设定': 'all',
+    '状态': 'all',
+}
 # 分类内分组的展示顺序；未列出的分组排在最后
 GROUP_ORDER = {
     '设定': ['总纲与规范', '角色', '势力', '修炼', '科技', '地理', '社会', '通用'],
@@ -63,6 +73,11 @@ PRIORITY = {
 
 CHAPTER_RE = re.compile(r'第\s*(\d+)\s*章')
 VOLUME_RE = re.compile(r'^第(\d+)卷(大纲|章纲)$')
+
+
+def slug(title):
+    """分组标题 → 文件名片段：去掉括号说明与空白。"""
+    return re.sub(r'\s+', '', re.sub(r'（.*?）|\(.*?\)', '', title)) or '未命名'
 
 
 def natkey(path):
@@ -580,13 +595,15 @@ class Builder:
                     self.block(parse_md(BASE / rel))
 
 
-def build(label, parts, prose, demote, filename):
+def build(label, parts, prose, demote, filename, complete=True):
     planned = [f for _, groups in parts for _, fs in groups for f in fs]
     if len(planned) != len(set(planned)):
         raise SystemExit('%s 分组内有重复文件' % label)
     tops = {Path(f).parts[0] for f in planned}
     present = sorted(str(p.relative_to(BASE)) for t in tops for p in (BASE / t).rglob('*.md'))
-    if set(present) != set(planned):
+    if not set(planned) <= set(present):
+        raise SystemExit('%s 引用了磁盘上不存在的文件: %s' % (label, sorted(set(planned) - set(present))))
+    if complete and set(present) != set(planned):
         raise SystemExit('%s 与磁盘不一致\n仅磁盘有: %s\n仅计划有: %s' % (
             label, sorted(set(present) - set(planned)), sorted(set(planned) - set(present))))
     b = Builder(prose=prose, demote=demote)
@@ -595,8 +612,8 @@ def build(label, parts, prose, demote, filename):
     b.doc.core_properties.comments = '由 novel-project 的 %d 个 markdown 合并导出' % b.files
     out = OUT / filename
     b.doc.save(str(out))
-    print('OK  %-30s %3d 文件  %6.0f KB' % (out.name, b.files, out.stat().st_size / 1024.0))
-    return out
+    print('OK  %-34s %3d 文件  %6.0f KB' % (out.name, b.files, out.stat().st_size / 1024.0))
+    return out, planned
 
 
 # ===================== 完整性核查 =====================
@@ -607,18 +624,11 @@ def han(s):
     return ''.join(HAN.findall(s))
 
 
-def check(docs, built=None):
-    """逐行比对：源文件里的汉字序列必须能在导出的 docx 中连续找到。"""
+def check(items):
+    """逐行比对：源文件里的汉字序列必须能在导出的 docx 中连续找到。
+    items = [(标签, docx 路径, [该文档实际覆盖的相对路径]), ...]"""
     failed = False
-    targets = {cn: [Path(f).parts[0] for _, fs in docs[cn] for f in fs] for cn in docs}
-    if built is None:
-        targets['全量合集'] = ORDER
-    else:
-        targets = {cn: v for cn, v in targets.items() if cn in built}
-        if '全量合集' in built:
-            targets['全量合集'] = ORDER
-    for cn, folders in targets.items():
-        path = OUT / ('%s-%s.docx' % (BOOK, cn))
+    for label, path, planned in items:
         if not path.exists():
             print('MISSING %s' % path.name)
             failed = True
@@ -627,16 +637,15 @@ def check(docs, built=None):
         doc = han(''.join(el.text for el in d.element.body.iter()
                           if el.tag == qn('w:t') and el.text))
         src_total, misses = 0, []
-        for fd in dict.fromkeys(folders):
-            for f in sorted((BASE / fd).rglob('*.md')):
-                for line in f.read_text(encoding='utf-8').splitlines():
-                    key = han(line)
-                    src_total += len(key)
-                    if len(key) >= 4 and key not in doc:
-                        misses.append((f.name, line))
-        ratio = len(doc) / src_total
-        print('%-6s 汉字 源%-7d docx%-7d 比值%.4f | 未命中 %d 行'
-              % (cn, src_total, len(doc), ratio, len(misses)))
+        for rel in planned:
+            for line in (BASE / rel).read_text(encoding='utf-8').splitlines():
+                key = han(line)
+                src_total += len(key)
+                if len(key) >= 4 and key not in doc:
+                    misses.append((Path(rel).name, line))
+        ratio = len(doc) / max(1, src_total)
+        print('%-30s %2d 文件 汉字 源%-7d docx%-7d 比值%.4f | 未命中 %d 行'
+              % (path.name, len(planned), src_total, len(doc), ratio, len(misses)))
         for name, line in misses[:5]:
             print('     · %s: %s' % (name, line[:70]))
         failed = failed or bool(misses)
@@ -647,9 +656,18 @@ def check(docs, built=None):
 def main():
     ap = argparse.ArgumentParser(description='导出《%s》Word 文档' % BOOK)
     ap.add_argument('--only', nargs='*', choices=ORDER, help='只导这些分类')
+    ap.add_argument('--mode', nargs='*', metavar='分类=all|group|both',
+                    help='临时覆盖某目录的合并粒度：all 整体一份 / group 按二级分组各一份 / both 两种都出')
     ap.add_argument('--check', action='store_true', help='只跑完整性核查')
     ap.add_argument('--manifest', action='store_true', help='打印分组结果后退出')
     args = ap.parse_args()
+
+    modes = dict(MERGE_MODE)
+    for spec in args.mode or []:
+        cn, sep, m = spec.partition('=')
+        if not sep or cn not in ORDER or m not in ('all', 'group', 'both'):
+            raise SystemExit('--mode 格式应为 分类=all|group|both，收到: %s' % spec)
+        modes[cn] = m
 
     if not BASE.is_dir():
         raise SystemExit('找不到源目录 %s（脚本需放在仓库 tools/ 下）' % BASE)
@@ -657,28 +675,54 @@ def main():
 
     if args.manifest:
         for cn in ORDER:
-            print('【%s】' % cn)
+            print('【%s】%s' % (cn, modes[cn]))
             for g, fs in docs[cn]:
                 print('  %s (%d)' % (g, len(fs)))
                 for f in fs:
                     print('      %s' % f)
         return 0
+
+    def planned_of(cn):
+        return [f for _, fs in docs[cn] for f in fs]
+
+    def items_from_modes(with_collection=True):
+        items = []
+        for cn in ORDER:
+            if modes[cn] in ('all', 'both'):
+                items.append(('%s-%s' % (BOOK, cn), OUT / ('%s-%s.docx' % (BOOK, cn)),
+                              planned_of(cn)))
+            if modes[cn] in ('group', 'both'):
+                for g, fs in docs[cn]:
+                    name = '%s-%s-%s' % (BOOK, cn, slug(g))
+                    items.append((name, OUT / ('%s.docx' % name), fs))
+        if with_collection:
+            items.append(('%s-全量合集' % BOOK, OUT / ('%s-全量合集.docx' % BOOK),
+                          [f for cn in ORDER for f in planned_of(cn)]))
+        return items
+
     if args.check:
-        return check(docs)
+        return check(items_from_modes())
 
     OUT.mkdir(parents=True, exist_ok=True)
     picked = args.only or ORDER
-    built = []
+    items = []
     for cn in picked:
-        build(cn, [(None, docs[cn])], prose=(cn == '正文'), demote=1,
-              filename='%s-%s.docx' % (BOOK, cn))
-        built.append(cn)
+        if modes[cn] in ('all', 'both'):
+            out, planned = build(cn, [(None, docs[cn])], prose=(cn == '正文'), demote=1,
+                                 filename='%s-%s.docx' % (BOOK, cn))
+            items.append((cn, out, planned))
+        if modes[cn] in ('group', 'both'):
+            for g, fs in docs[cn]:
+                out, planned = build('%s·%s' % (cn, g), [(None, [(g, fs)])],
+                                     prose=(cn == '正文'), demote=1,
+                                     filename='%s-%s-%s.docx' % (BOOK, cn, slug(g)),
+                                     complete=False)
+                items.append((g, out, planned))
     if len(picked) == len(ORDER):
-        build('全量合集', [(cn, docs[cn]) for cn in ORDER], prose=False, demote=2,
-              filename='%s-全量合集.docx' % BOOK)
-        built.append('全量合集')
-    return check({cn: docs[cn] for cn in docs if cn in built} if len(built) < len(ORDER)
-                 else docs, built)
+        out, planned = build('全量合集', [(cn, docs[cn]) for cn in ORDER],
+                             prose=False, demote=2, filename='%s-全量合集.docx' % BOOK)
+        items.append(('全量合集', out, planned))
+    return check(items)
 
 
 if __name__ == '__main__':
